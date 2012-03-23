@@ -124,7 +124,7 @@ INSTALLED_APPS = (
     'kombu.transport.django',
     'storages',
 
-    'posts',
+    'blogs',
 )
 
 # A sample logging configuration. The only tangible logging

@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from django.template.loader import get_template
 from django.template import Context
 
-from posts.models import Blog, Tag, Post
+from blogs.models import Blog, Tag, Post
 
 
 @receiver(post_save, sender=User)
@@ -26,7 +26,7 @@ def create_tutorial_post_for_new_blog(sender, instance, created, **kwargs):
         t = Tag(blog=instance, name='Tutorial')
         t.save()
 
-        post_template = get_template('posts/markdown/tutorial_post.md')
+        post_template = get_template('blogs/markdown/tutorial_post.md')
         context = Context({})
         p = Post(
             blog=instance,

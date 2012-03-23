@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from posts.views import TagDetailView, PostListView, PostDetailView
+from blogs.views import TagDetailView, PostListView, PostDetailView
 
 urlpatterns = patterns('',
 

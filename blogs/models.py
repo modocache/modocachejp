@@ -116,4 +116,4 @@ class Post(DatedModel):
         })
 
 
-from posts.signals import *
+from blogs.signals import *
