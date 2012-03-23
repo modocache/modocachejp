@@ -36,6 +36,11 @@ DATABASES = {
 TIME_ZONE = 'Atlantic/Reykjavik' # UTC+00
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
+SITE_NAME = 'modocache.jp'
+if DEBUG:
+    SITE_DOMAIN = 'localhost:8000'
+else:
+    SITE_DOMAIN = 'modocache.jp'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
