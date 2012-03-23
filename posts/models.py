@@ -72,6 +72,7 @@ class Post(DatedModel):
     slug = models.SlugField(max_length=40, blank=True)
     body = models.TextField()
     body_html = models.TextField(blank=True)
+    is_public = models.BooleanField(default=True)
 
     class Meta(object):
         verbose_name = 'post'
