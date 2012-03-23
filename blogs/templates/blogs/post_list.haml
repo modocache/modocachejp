@@ -2,3 +2,11 @@
     %h1
       %a{href:'{{ post.get_absolute_url }}'}= post.title
     .content= post.body_html|safe
+
+.pagination
+  - if page_obj.has_previous
+    %a{href:'?page={{ page_obj.previous_page_number }}'}
+      &larr;
+  - if page_obj.has_next
+    %a{href:'?page={{ page_obj.next_page_number }}'}
+      &rarr;

@@ -22,11 +22,7 @@ class TagDetailView(DetailView):
 class PostListView(ListView):
     context_object_name = 'posts'
     model = Post
-
-    def get_context_data(self, **kwargs):
-        context = super(PostListView, self).get_context_data(**kwargs)
-        context['all_posts'] = Post.objects.all()
-        return context
+    paginate_by = 4
 
 
 class PostDetailView(DetailView):
