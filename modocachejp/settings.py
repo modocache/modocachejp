@@ -24,7 +24,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'modocache_blog',
+        'NAME': 'modocachejp',
         'USER': os.environ.get('DJANGO_POSTGRESQL_USERNAME'),
         'PASSWORD': '',
         'HOST': '',
@@ -42,9 +42,9 @@ USE_TZ = True
 
 
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID_MODOCACHE_BLOG')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY_MODOCACHE_BLOG')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME_MODOCACHE_BLOG')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID_MODOCACHEJP')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY_MODOCACHEJP')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME_MODOCACHEJP')
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = ''
@@ -62,7 +62,7 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = os.environ.get('AWS_STATIC_URL_MODOCACHE_BLOG', '/static/')
+STATIC_URL = os.environ.get('AWS_STATIC_URL_MODOCACHEJP', '/static/')
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -98,10 +98,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'blog.urls'
+ROOT_URLCONF = 'modocachejp.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'blog.wsgi.application'
+WSGI_APPLICATION = 'modocachejp.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
