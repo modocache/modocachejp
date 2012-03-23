@@ -1,0 +1,6 @@
+{% for post in posts %}
+    <h1>
+      <a href='{{ post.get_absolute_url }}'>{{ post.title }}</a>
+    </h1>
+    <div class='content'>{{ post.body_html|safe }}</div>
+{% endfor %}

@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.template.loader import get_template
@@ -11,7 +12,12 @@ from posts.models import Blog, Tag, Post
 def create_blog_for_new_user(sender, instance, created, **kwargs):
     if created:
         b = Blog(user=instance)
-        b.save()
+        try:
+            b.clean()
+        except ValidationError:
+            pass
+        else:
+            b.save()
 
 
 @receiver(post_save, sender=Blog)

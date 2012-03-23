@@ -1,6 +1,8 @@
 import datetime
+import markdown
 
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.template.defaultfilters import slugify
 
@@ -36,6 +38,11 @@ class Blog(DatedModel):
     def __unicode__(self):
         return '<Blog: {user}\'s blog>'.format(user=self.user.username)
 
+    def clean(self):
+        if Blog.objects.count() > 0:
+            raise ValidationError('A blog already exists. Only one blog '
+                                  'may exist per application.')
+
 
 class Tag(DatedModel):
     """A tag used to organize posts."""
@@ -46,9 +53,11 @@ class Tag(DatedModel):
     class Meta(object):
         verbose_name = 'tag'
         verbose_name_plural = 'tags'
+        unique_together = (('blog', 'slug'),)
 
     def __unicode__(self):
-        return '<Tag: {name} in {blog}>'.format(name=self.name, blog=self.blog)
+        return '<Tag: {name} in {blog}>'.format(
+            name=self.name, blog=self.blog)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -58,11 +67,11 @@ class Tag(DatedModel):
 class Post(DatedModel):
     """A post made to the user blog."""
     blog = models.ForeignKey(Blog)
-    tags = models.ManyToManyField(Tag, related_name='posts')
+    tags = models.ManyToManyField(Tag, related_name='posts', blank=True)
     title = models.CharField(max_length=40)
     slug = models.SlugField(max_length=40, blank=True)
     body = models.TextField()
-    body_html = models.TextField(editable=False)
+    body_html = models.TextField(blank=True)
 
     class Meta(object):
         verbose_name = 'post'
@@ -71,13 +80,34 @@ class Post(DatedModel):
     def __unicode__(self):
         return '<Post: {slug}>'.format(slug=self.slug)
 
+    def clean(self):
+        # Ensure date and slug are unique together
+        slug_date = datetime.datetime.utcnow()
+        if self.created_at:
+            slug_date = self.created_at
+
+        duplicates = Post.objects.filter(
+            created_at__year=slug_date.year,
+            created_at__month=slug_date.month,
+            created_at__day=slug_date.day,
+            slug=slugify(self.title)
+        )
+        if self.pk:
+            duplicates = duplicates.exclude(pk=self.pk)
+
+        if duplicates:
+            raise ValidationError('A post with an identical '
+                                  'slug already exists for that date.')
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
+        self.body_html = markdown.markdown(
+            self.body, ['codehilite(force_linenos=True)'])
         super(Post, self).save(*args, **kwargs)
 
     @models.permalink
     def get_absolute_url(self):
-        return ('post_detail', (), {
+        return ('posts_detail', (), {
             'year': self.created_at.year,
             'month': self.created_at.month,
             'day': self.created_at.day,
