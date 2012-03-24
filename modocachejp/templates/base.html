@@ -1,3 +1,4 @@
+{% load compress %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -6,10 +7,11 @@
         {{ current_site.name }}
       {% endblock %}
     </title>
-    <link href='{{ STATIC_URL }}css/bootstrap.min.css' rel='stylesheet' />
-    <link href='{{ STATIC_URL }}css/codehilite.css' rel='stylesheet' />
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' />
-    <link href='{{ STATIC_URL }}css/main.css' rel='stylesheet' />
+    {% compress css %}
+      <link href='{{ STATIC_URL }}css/bootstrap.min.css' rel='stylesheet' />
+      <link href='{{ STATIC_URL }}css/codehilite.css' rel='stylesheet' />
+      <link href='{{ STATIC_URL }}css/main.css' rel='stylesheet' />
+    {% endcompress %}
   </head>
   <body>
     <div class='container'>

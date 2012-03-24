@@ -1,13 +1,15 @@
+- load compress
+
 !!! 5
 %html
   %head
     %title
       - block title
         = current_site.name
-    %link{rel:'stylesheet', href:'{{ STATIC_URL }}css/bootstrap.min.css'}
-    %link{rel:'stylesheet', href:'{{ STATIC_URL }}css/codehilite.css'}
-    %link{rel:'stylesheet', href:'http://fonts.googleapis.com/css?family=Ubuntu'}
-    %link{rel:'stylesheet', href:'{{ STATIC_URL }}css/main.css'}
+    - compress css
+      %link{rel:'stylesheet', href:'{{ STATIC_URL }}css/bootstrap.min.css'}
+      %link{rel:'stylesheet', href:'{{ STATIC_URL }}css/codehilite.css'}
+      %link{rel:'stylesheet', href:'{{ STATIC_URL }}css/main.css'}
   %body
     .container
       .row
