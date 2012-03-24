@@ -1,0 +1,63 @@
+@import "codehilite.less";
+
+// Side scroll for codehilite
+table.codehilitetable pre {
+    display: block;
+    width: auto;
+    overflow-x: scroll;
+    white-space: pre;
+    word-wrap: normal;
+}
+table.codehilitetable .codehilite pre {
+    width: 480px;
+}
+
+
+@font-face {
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Ubuntu'), url('http://themes.googleusercontent.com/static/fonts/ubuntu/v4/vRvZYZlUaogOuHbBTT1SNevvDin1pK8aKteLpeZ5c0A.woff') format('woff');
+}
+
+
+a:hover {
+    text-decoration: none;
+}
+
+.page-header.site-header {
+    margin-left: 60px;
+    margin-bottom: 60px;
+    border-bottom: none;
+
+    h1 { font-size: 36px; }
+    a { color: #333; }
+}
+
+.site-sidebar { padding-top:70px; }
+
+.post-container {
+    padding-bottom:80px;
+    h1 {
+        padding-bottom:10px;
+        small span.date { font-size: 12px; }
+        small span.label {
+            font-size: 12px;
+
+        }
+    }
+    .post-container  {
+        h1 small {
+            span.date {font-size:12px;}
+            span.label {
+                font-size:10px; padding:3px 5px 3px;
+            }
+        }
+        .content  {
+            // Resize header in blog posts.
+            h1 {font-size:26px;}
+            h2 {font-size:22px;}
+            h3 {font-size:16px;}
+        }
+    }
+}
