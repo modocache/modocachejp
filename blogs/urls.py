@@ -7,7 +7,7 @@ from blogs.views import TagDetailView, PostListView, PostDetailView, \
 
 urlpatterns = patterns('',
     url(
-        regex=r'^tags/(?P<tag_slug>[-\w]+)/$',
+        regex=r'^tagged/(?P<tag_slug>[-\w]+)/$',
         view=TagDetailView.as_view(),
         name='tags_detail',
     ),

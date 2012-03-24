@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+  {% block main-content %}
+    <h1>
+      404
+      <small>
+        Page Not Found
+      </small>
+    </h1>
+    <hr />
+    <p>
+      That doesn't appear to be a valid URL.
+      Return to
+      <a href='{% url site_index %}'>
+        top page.
+      </a>
+    </p>
+  {% endblock %}

@@ -1,0 +1,43 @@
+a:hover {
+  text-decoration: none;
+}
+
+/** Pygments */
+table.codehilitetable pre {
+    display: block;
+    width: auto;
+    overflow-x: scroll;
+    white-space: pre;
+    word-wrap: normal;
+}
+table.codehilitetable .codehilite pre {
+    width: 480px;
+}
+
+/** Other */
+/** Site header. */
+.page-header.site-header {
+    margin-left: 60px;
+    margin-bottom: 60px;
+    border-bottom: none;
+}
+.page-header.site-header h1 {
+    font-size: 36px;
+}
+.page-header.site-header a {
+    color: #333;
+}
+.page-header.site-header a:hover {
+    text-decoration: none;
+}
+
+.site-sidebar {padding-top:70px;}
+
+.post-container {padding-bottom:80px;}
+.post-container h1 {padding-bottom:10px;}
+.post-container h1 small span.date {font-size:12px;}
+.post-container h1 small span.label {font-size:10px; padding:3px 5px 3px;}
+/** Resize headers in blog posts. */
+.post-container .content h1 {font-size:26px;}
+.post-container .content h2 {font-size:22px;}
+.post-container .content h3 {font-size:16px;}

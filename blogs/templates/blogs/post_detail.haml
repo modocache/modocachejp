@@ -1,2 +1,3 @@
-%h1= post.title
-.content= post.body_html|safe
+- extends 'blogs/base.html'
+  - block main-content
+    - include 'blogs/includes/post_detail.html'

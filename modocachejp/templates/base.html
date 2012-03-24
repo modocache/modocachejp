@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      {% block title %}
+        {{ current_site.name }}
+      {% endblock %}
+    </title>
+    <link href='{{ STATIC_URL }}css/bootstrap.min.css' rel='stylesheet' />
+    <link href='{{ STATIC_URL }}css/codehilite.css' rel='stylesheet' />
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' />
+    <link href='{{ STATIC_URL }}css/main.css' rel='stylesheet' />
+  </head>
+  <body>
+    <div class='container'>
+      <div class='row'>
+        <div class='page-header site-header'>
+          <h1>
+            <a href='{% url site_index %}'>{{ current_site.name }}</a>
+          </h1>
+        </div>
+        <div class='content'>
+          <div class='span7 offset2'>
+            {% block main-content %}
+            {% endblock %}
+          </div>
+          <div class='span2 offset1 site-sidebar'>
+            {% block sidebar %}
+            {% endblock %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+<div class='post-container'>
+  <h1>
+    {% block post-title %}
+      <a href='{{ post.get_absolute_url }}'>{{ post.title }}</a>
+    {% endblock %}
+    {% if post %}
+      <small>
+        <span class='date'>{{ post.created_at_localtime }}</span>
+        {% if post.tags.all %}
+          &nbsp;
+        {% endif %}
+        {% for tag in post.tags.all %}
+          <a href='{{ tag.get_absolute_url }}'><span class='label label-inverse'>{{ tag.name }}</span></a>
+        {% endfor %}
+      </small>
+    {% endif %}
+  </h1>
+  <div class='content'>
+    {% block post-content %}
+      {{ post.body_html|safe }}
+    {% endblock %}
+  </div>
+</div>

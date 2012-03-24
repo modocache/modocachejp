@@ -1,4 +1,8 @@
-- for date, count in monthly_post_count
-  %li
-    %a{href:'{% url posts_archive_month date.year date.month %}'}
-      {{date|date:'Y/m'}} ({{count}})
+- if monthly_post_count
+  %ul.nav.nav-list
+    %li.nav-header
+      Archive
+    - for date, count in monthly_post_count
+      %li
+        %a{href:'{% url posts_archive_month date.year date.month %}'}
+          {{date|date:'Y/m'}} ({{count}})

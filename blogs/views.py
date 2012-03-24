@@ -1,14 +1,19 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView, DetailView, ArchiveIndexView, \
+from django.views.generic import ListView, DetailView, \
                                  DayArchiveView, MonthArchiveView, \
                                  YearArchiveView
 
 from blogs.models import Tag, Post
 
 
+PAGINATE_BY = 3
+
+
 class TagDetailView(DetailView):
     context_object_name = 'tag'
     model = Tag
+    template_name = 'blogs/post_list.html'
 
     def get_object(self):
         return get_object_or_404(
@@ -17,7 +22,17 @@ class TagDetailView(DetailView):
     def get_context_data(self, **kwargs):
         tag = self.get_object()
         context = super(TagDetailView, self).get_context_data(**kwargs)
-        context['posts'] = tag.posts.all()
+        posts = tag.posts.filter(is_public=True).order_by('-created_at')
+        paginator = Paginator(posts, PAGINATE_BY)
+        page = self.request.GET.get('page', 1)
+        try:
+            page_obj = paginator.page(page)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+        context['paginator'] = paginator
+        context['page_obj'] = context['posts'] = page_obj
         return context
 
 
@@ -42,10 +57,12 @@ class PostListMixin(object):
     """
     context_object_name = 'posts'
     model = Post
-    paginate_by = 4
+    queryset = Post.public.all()
+    paginate_by = PAGINATE_BY
     date_field = 'created_at'
     month_format = '%m'
     make_object_list = True
+    template_name = 'blogs/post_list.html'
 
     def get_queryset(self):
         """Order in descending order of date."""
@@ -53,8 +70,6 @@ class PostListMixin(object):
             '-'+self.date_field)
 
 class PostListView(PostListMixin, ListView):
-    pass
-class PostArchiveIndexView(PostListMixin, ArchiveIndexView):
     pass
 class PostDayArchiveView(PostListMixin, DayArchiveView):
     pass

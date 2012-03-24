@@ -1,0 +1,12 @@
+- extends 'base.html'
+  - block main-content
+    %h1
+      404
+      %small
+        Page Not Found
+    %hr
+    %p
+      That doesn't appear to be a valid URL.
+      Return to
+      %a{href:'{% url site_index %}'}
+        top page.

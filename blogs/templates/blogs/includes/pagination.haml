@@ -1,0 +1,19 @@
+- if page_obj.has_previous or page_obj.has_next
+  .pagination
+    %ul
+      - if page_obj.has_previous
+        %li
+          %a{href:'?page={{ page_obj.previous_page_number }}'}
+            &lt;
+      - else
+        %li.disabled
+          %a
+           &lt;
+      - if page_obj.has_next
+        %li
+          %a{href:'?page={{ page_obj.next_page_number }}'}
+            &gt;
+      - else
+        %li.disabled
+          %a
+            &gt;

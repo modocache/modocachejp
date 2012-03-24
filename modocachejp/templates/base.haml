@@ -1,0 +1,21 @@
+!!! 5
+%html
+  %head
+    %title
+      - block title
+        = current_site.name
+    %link{rel:'stylesheet', href:'{{ STATIC_URL }}css/bootstrap.min.css'}
+    %link{rel:'stylesheet', href:'{{ STATIC_URL }}css/codehilite.css'}
+    %link{rel:'stylesheet', href:'http://fonts.googleapis.com/css?family=Ubuntu'}
+    %link{rel:'stylesheet', href:'{{ STATIC_URL }}css/main.css'}
+  %body
+    .container
+      .row
+        .page-header.site-header
+          %h1
+            %a{href:'{% url site_index %}'}= current_site.name
+        .content
+          .span7.offset2
+            - block main-content
+          .span2.offset1.site-sidebar
+            - block sidebar

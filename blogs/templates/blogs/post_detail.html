@@ -1,2 +1,4 @@
-<h1>{{ post.title }}</h1>
-<div class='content'>{{ post.body_html|safe }}</div>
+{% extends 'blogs/base.html' %}
+  {% block main-content %}
+    {% include 'blogs/includes/post_detail.html' %}
+  {% endblock %}

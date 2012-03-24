@@ -23,8 +23,7 @@ def create_blog_for_new_user(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Blog)
 def create_tutorial_post_for_new_blog(sender, instance, created, **kwargs):
     if created:
-        t = Tag(blog=instance, name='Tutorial')
-        t.save()
+        t = Tag.objects.get_or_create(blog=instance, name='Site Info')[0]
 
         post_template = get_template('blogs/rendered/post_sample_body.md')
         context = Context({})

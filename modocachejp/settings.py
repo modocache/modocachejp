@@ -6,7 +6,7 @@ djcelery.setup_loader()
 
 
 DEBUG = os.environ.has_key('DJANGO_DEBUG_TRUE')
-TEMPLATE_DEBUG = DEBUG
+TEMPLATE_DEBUG = STATIC_DEBUG = DEBUG
 
 if os.environ.has_key('DJANGO_SECRET_KEY'):
     SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
@@ -34,9 +34,10 @@ DATABASES = {
 
 
 TIME_ZONE = 'Atlantic/Reykjavik' # UTC+00
+BLOGS_DEFAULT_TIME_ZONE = 'Asia/Tokyo'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
-SITE_NAME = 'modocache.jp'
+SITE_NAME = 'mjp'
 if DEBUG:
     SITE_DOMAIN = 'localhost:8000'
 else:
@@ -67,8 +68,10 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = os.environ.get('AWS_STATIC_URL_MODOCACHEJP', '/static/')
-
+if STATIC_DEBUG:
+    STATIC_URL = os.environ.get('AWS_STATIC_URL_MODOCACHEJP', '/static/')
+else:
+    STATIC_URL = '/static/'
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
@@ -115,6 +118,17 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_DIR, 'templates')
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.tz',
+    'django.contrib.messages.context_processors.messages',
+    'modocachejp.context_processors.site_details',
+)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -128,6 +142,7 @@ INSTALLED_APPS = (
     'djcelery',
     'kombu.transport.django',
     'storages',
+    'south',
 
     'blogs',
 )

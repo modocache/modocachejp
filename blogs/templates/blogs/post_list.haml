@@ -1,17 +1,10 @@
-- load monthly_post_count
-
-- for post in posts
-    %h1
-      %a{href:'{{ post.get_absolute_url }}'}= post.title
-    .content= post.body_html|safe
-
-.pagination
-  - if page_obj.has_previous
-    %a{href:'?page={{ page_obj.previous_page_number }}'}
-      &larr;
-  - if page_obj.has_next
-    %a{href:'?page={{ page_obj.next_page_number }}'}
-      &rarr;
-
-%ul
-  - monthly_post_count
+- extends 'blogs/base.html'
+  - block main-content
+    - for post in posts
+      - include 'blogs/includes/post_detail.html'
+    - empty
+      - include 'blogs/includes/post_detail_empty.html'
+    .row
+      .offset3
+        - if page_obj
+          - include 'blogs/includes/pagination.html'

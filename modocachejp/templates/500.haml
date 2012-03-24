@@ -1,0 +1,12 @@
+- extends 'base.html'
+  - block main-content
+    %h1
+      500
+      %small
+        Internal Server Error
+    %hr
+    %p
+      The server has shit its pants.
+      Return to
+      %a{href:'{% url site_index %}'}
+        top page.
