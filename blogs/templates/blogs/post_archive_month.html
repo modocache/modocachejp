@@ -1,4 +1,6 @@
-{% load monthly_post_count %}
+{% for date in date_list %}
+  <h1>{{ date }}</h1>
+{% endfor %}
 {% for post in posts %}
     <h1>
       <a href='{{ post.get_absolute_url }}'>{{ post.title }}</a>
@@ -17,6 +19,3 @@
     </a>
   {% endif %}
 </div>
-<ul>
-  {% monthly_post_count %}
-</ul>

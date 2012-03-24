@@ -1,0 +1,7 @@
+{% for date, count in monthly_post_count %}
+  <li>
+    <a href='{% url posts_archive_month date.year date.month %}'>
+      {{date|date:'Y/m'}} ({{count}})
+    </a>
+  </li>
+{% endfor %}

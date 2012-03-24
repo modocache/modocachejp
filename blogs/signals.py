@@ -26,7 +26,7 @@ def create_tutorial_post_for_new_blog(sender, instance, created, **kwargs):
         t = Tag(blog=instance, name='Tutorial')
         t.save()
 
-        post_template = get_template('blogs/markdown/tutorial_post.md')
+        post_template = get_template('blogs/rendered/post_sample_body.md')
         context = Context({})
         p = Post(
             blog=instance,
