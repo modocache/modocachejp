@@ -5,7 +5,7 @@ import djcelery
 djcelery.setup_loader()
 
 
-DEBUG = os.environ.has_key('DJANGO_DEBUG_TRUE')
+DEBUG = False #os.environ.has_key('DJANGO_DEBUG_TRUE')
 TEMPLATE_DEBUG = STATIC_DEBUG = DEBUG
 
 if os.environ.has_key('DJANGO_SECRET_KEY'):
@@ -178,6 +178,12 @@ LOGGING = {
     }
 }
 
+
+BROKER_BACKEND = 'kombu.transport.django.Transport'
+CELERY_RESULT_DBURI = DATABASES['default']
+
+
+# django_compressor
 COMPRESS_ENABLED = True
 COMPRESS_ROOT = os.path.join(PROJECT_DIR, 'static')
 COMPRESS_URL = STATIC_URL
