@@ -5,7 +5,7 @@ import djcelery
 djcelery.setup_loader()
 
 
-DEBUG = False #os.environ.has_key('DJANGO_DEBUG_TRUE')
+DEBUG = os.environ.has_key('DJANGO_DEBUG_TRUE')
 TEMPLATE_DEBUG = STATIC_DEBUG = DEBUG
 
 if os.environ.has_key('DJANGO_SECRET_KEY'):
