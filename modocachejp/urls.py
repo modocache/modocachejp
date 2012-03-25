@@ -15,4 +15,3 @@ urlpatterns = patterns('',
         name='site_index',
     ),
 )
-
