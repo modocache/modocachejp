@@ -1,5 +1,4 @@
 import datetime
-import markdown
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -7,6 +6,8 @@ from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import slugify
 import pytz
+
+from blogs.utils import convert_markdown
 
 
 def get_defaul_blog_tz():
@@ -143,8 +144,7 @@ class Post(DatedModel):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
-        self.body_html = markdown.markdown(
-            self.body, ['codehilite(force_linenos=True)'])
+        self.body_html = convert_markdown(self.body)
         super(Post, self).save(*args, **kwargs)
 
     @models.permalink

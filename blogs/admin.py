@@ -15,7 +15,7 @@ class PostAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Title', {'fields':['title', 'tags', 'blog']}),
-        ('Body', {'fields':['body']}),
+        ('Body', {'fields':['body',]}),
         ('Publishing', {'fields':['is_public']}),
     )
 
