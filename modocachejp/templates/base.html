@@ -7,10 +7,8 @@
         {{ current_site.name }}
       {% endblock %}
     </title>
-    {% compress css %}
-      <link href='{{ STATIC_URL }}css/bootstrap.min.css' rel='stylesheet' />
-      <link href='{{ STATIC_URL }}css/main.css' rel='stylesheet' />
-    {% endcompress %}
+    <link href='{{ STATIC_URL }}css/bootstrap.min.css' rel='stylesheet' />
+    <link href='{{ STATIC_URL }}css/main.css' rel='stylesheet' />
   </head>
   <body>
     <div class='container'>
