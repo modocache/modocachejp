@@ -6,8 +6,9 @@
     %title
       - block title
         = current_site.name
-    %link{rel:'stylesheet', href:'{{ STATIC_URL }}css/bootstrap.min.css'}
-    %link{rel:'stylesheet', href:'{{ STATIC_URL }}css/main.css'}
+    - compress css
+      %link{rel:'stylesheet', href:'{{ STATIC_URL }}css/bootstrap.min.css'}
+      %link{rel:'stylesheet', href:'{{ STATIC_URL }}css/main.css'}
   %body
     .container
       .row
