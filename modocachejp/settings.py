@@ -36,14 +36,23 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'modocachejp',
-        'USER': os.environ.get('DJANGO_POSTGRESQL_USERNAME'),
+        'ENGINE':   'django.db.backends.postgresql_psycopg2',
+        'NAME':     'modocachejp',
+        'USER':     os.environ.get('DJANGO_POSTGRESQL_USERNAME'),
         'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'HOST':     '',
+        'PORT':     '',
     }
 }
+CACHES = {
+    'default': {
+        'BACKEND':  'django_pylibmc.memcached.PyLibMCCache',
+        'LOCATION': '127.0.0.1:11211',
+    },
+}
+CACHE_MIDDLEWARE_ALIAS = 'default'
+CACHE_MIDDLEWARE_SECONDS = 600
+CACHE_MIDDLEWARE_KEY_PREFIX = ''
 
 
 TIME_ZONE = 'Atlantic/Reykjavik' # UTC+00
@@ -113,12 +122,14 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 ROOT_URLCONF = 'modocachejp.urls'
@@ -159,6 +170,7 @@ INSTALLED_APPS = (
     'storages',
     'south',
     'compressor',
+    'memcache_status',
 
     'blogs',
 )
