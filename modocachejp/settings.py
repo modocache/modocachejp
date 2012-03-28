@@ -91,9 +91,8 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
+STATIC_URL = os.environ.get('AWS_STATIC_URL_MODOCACHEJP', '/static/')
 if STATIC_DEBUG:
-    STATIC_URL = os.environ.get('AWS_STATIC_URL_MODOCACHEJP', '/static/')
-else:
     STATIC_URL = '/static/'
 # Additional locations of static files
 STATICFILES_DIRS = (
