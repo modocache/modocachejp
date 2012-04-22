@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -34,3 +35,13 @@ def create_tutorial_post_for_new_blog(sender, instance, created, **kwargs):
         )
         p.save()
         p.tags.add(t)
+
+
+@receiver(post_save, sender=Blog)
+def clear_cache_for_new_blog(sender, instance, created, **kwargs):
+    cache.clear()
+
+
+@receiver(post_save, sender=Post)
+def clear_cache_for_new_post(sender, instance, created, **kwargs):
+    cache.clear()
