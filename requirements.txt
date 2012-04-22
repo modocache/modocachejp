@@ -1,4 +1,4 @@
-git+https://github.com/django/django.git
+Django==1.4
 Markdown==2.1.1
 Pygments==1.5
 South==0.7.4
