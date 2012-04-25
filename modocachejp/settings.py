@@ -19,7 +19,7 @@ DEVELOPMENT_NECESSARY_ENVKEYS = HEROKU_NECESSARY_ENVKEYS + [
 
 
 DEBUG = os.environ.has_key('DJANGO_DEBUG_TRUE')
-TEMPLATE_DEBUG = STATIC_DEBUG = DEBUG
+TEMPLATE_DEBUG = STATIC_DEBUG = CACHE_DEBUG = DEBUG
 
 if os.environ.has_key('DJANGO_SECRET_KEY'):
     SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
@@ -44,12 +44,20 @@ DATABASES = {
         'PORT':     '',
     }
 }
-CACHES = {
-    'default': {
-        'BACKEND':  'django_pylibmc.memcached.PyLibMCCache',
-        'LOCATION': '127.0.0.1:11211',
-    },
-}
+if CACHE_DEBUG:
+    CACHES = {
+        'default': {
+            'BACKEND':  'django.core.cache.backends.dummy.DummyCache',
+        },
+    }
+else:
+    CACHES = {
+        'default': {
+            'BACKEND':  'django_pylibmc.memcached.PyLibMCCache',
+            'LOCATION': '127.0.0.1:11211',
+        },
+    }
+
 CACHE_MIDDLEWARE_ALIAS = 'default'
 CACHE_MIDDLEWARE_SECONDS = 600
 CACHE_MIDDLEWARE_KEY_PREFIX = ''
@@ -164,13 +172,15 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
 
-    'gunicorn',
+    'compressor',
+    'django_extensions',
     'djcelery',
+    'gunicorn',
     'kombu.transport.django',
+    'memcache_status',
     'storages',
     'south',
-    'compressor',
-    'memcache_status',
+    'tastypie',
 
     'blogs',
 )

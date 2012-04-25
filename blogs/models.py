@@ -1,13 +1,14 @@
 import datetime
 
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User, Permission
+from django.core.exceptions import FieldError, ValidationError
 from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import slugify
 import pytz
 
 from blogs.utils import convert_markdown
+from modocachejp.utils import get_function_name
 
 
 def get_defaul_blog_tz():
@@ -56,7 +57,47 @@ class DatedModel(models.Model):
         return self._field_at_localtime('updated_at')
 
 
-class Blog(DatedModel):
+class PermissionModel(models.Model):
+    """
+    Abstract base class which allows models to give users
+    permissions when saved.
+    """
+
+    class Meta(object):
+        abstract = True
+
+    def get_user(self):
+        if hasattr(self, 'user'):
+            return self.user
+        else:
+            raise FieldError(
+                '{cls_name} must override {func_name} to return a '
+                'User instance with associated permissions.'.format(
+                    cls_name=self.__class__.__name__,
+                    func_name=get_function_name(),
+                )
+            )
+
+    def add_permissions(self):
+        user = self.get_user()
+        for perm_action in ['add', 'change', 'delete']:
+            codename = '{action}_{model}'.format(
+                action=perm_action,
+                model=self._meta.object_name.lower()
+            )
+            perm = Permission.objects.get_by_natural_key(
+                codename=codename,
+                app_label=self._meta.app_label,
+                model=self._meta.object_name.lower()
+            )
+            user.user_permissions.add(perm)
+
+    def save(self, *args, **kwargs):
+        super(PermissionModel, self).save(*args, **kwargs)
+        self.add_permissions()
+
+
+class Blog(DatedModel, PermissionModel):
     """A blog, one of which exists for each user."""
     user = models.OneToOneField(User)
 
@@ -68,12 +109,12 @@ class Blog(DatedModel):
         return '<Blog: {user}\'s blog>'.format(user=self.user.username)
 
     def clean(self):
-        if Blog.objects.count() > 0:
+        if Blog.objects.count() > 0 and Blog.objects.all()[0] != self:
             raise ValidationError('A blog already exists. Only one blog '
                                   'may exist per application.')
 
 
-class Tag(DatedModel):
+class Tag(DatedModel, PermissionModel):
     """A tag used to organize posts."""
     blog = models.ForeignKey(Blog)
     name = models.CharField(max_length=25)
@@ -92,6 +133,9 @@ class Tag(DatedModel):
         self.slug = slugify(self.name)
         super(Tag, self).save(*args, **kwargs)
 
+    def get_user(self):
+        return self.blog.user
+
     @models.permalink
     def get_absolute_url(self):
         return ('tags_detail', (), {'tag_slug': self.slug})
@@ -103,7 +147,7 @@ class PublicManager(models.Manager):
             get_query_set().filter(is_public=True)
 
 
-class Post(DatedModel):
+class Post(DatedModel, PermissionModel):
     """A post made to the user blog."""
     blog = models.ForeignKey(Blog)
     tags = models.ManyToManyField(Tag, related_name='posts', blank=True)
@@ -146,6 +190,9 @@ class Post(DatedModel):
         self.slug = slugify(self.title)
         self.body_html = convert_markdown(self.body)
         super(Post, self).save(*args, **kwargs)
+
+    def get_user(self):
+        return self.blog.user
 
     @models.permalink
     def get_absolute_url(self):
