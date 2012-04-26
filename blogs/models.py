@@ -78,19 +78,24 @@ class PermissionModel(models.Model):
                 )
             )
 
-    def add_permissions(self):
+    def add_permissions(self, add=True, change=True, delete=True):
         user = self.get_user()
         for perm_action in ['add', 'change', 'delete']:
-            codename = '{action}_{model}'.format(
-                action=perm_action,
-                model=self._meta.object_name.lower()
-            )
-            perm = Permission.objects.get_by_natural_key(
-                codename=codename,
-                app_label=self._meta.app_label,
-                model=self._meta.object_name.lower()
-            )
-            user.user_permissions.add(perm)
+
+            if (add and perm_action == 'add') or \
+               (change and perm_action == 'change') or \
+               (delete and perm_action == 'delete'):
+
+                codename = '{action}_{model}'.format(
+                    action=perm_action,
+                    model=self._meta.object_name.lower()
+                )
+                perm = Permission.objects.get_by_natural_key(
+                    codename=codename,
+                    app_label=self._meta.app_label,
+                    model=self._meta.object_name.lower()
+                )
+                user.user_permissions.add(perm)
 
     def save(self, *args, **kwargs):
         super(PermissionModel, self).save(*args, **kwargs)
@@ -142,6 +147,7 @@ class Tag(DatedModel, PermissionModel):
 
 
 class PublicManager(models.Manager):
+    """Limits queries to public Posts."""
     def get_query_set(self):
         return super(PublicManager, self).\
             get_query_set().filter(is_public=True)
