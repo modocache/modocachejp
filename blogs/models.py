@@ -42,19 +42,24 @@ class DatedModel(models.Model):
     class Meta(object):
         abstract = True
 
-    def _field_at_localtime(self, field):
-        self_time = getattr(self, field)
-        to_tz = pytz.timezone(pytz.common_timezones[int(self.timezone)])
-        naive_time = self_time.replace(tzinfo=None)
-        return self_time + to_tz.utcoffset(naive_time)
+    @classmethod
+    def localtime(cls, utc_time, int_timezone):
+        to_tz = pytz.timezone(pytz.common_timezones[int_timezone])
+        naive_time = utc_time.replace(tzinfo=None)
+        return utc_time + to_tz.utcoffset(naive_time)
+
+    @classmethod
+    def field_at_localtime(cls, obj, field):
+        obj_time = getattr(obj, field)
+        return DatedModel.localtime(obj_time, int(obj.timezone))
 
     @property
     def created_at_localtime(self):
-        return self._field_at_localtime('created_at')
+        return DatedModel.field_at_localtime(self, 'created_at')
 
     @property
     def updated_at_localtime(self):
-        return self._field_at_localtime('updated_at')
+        return DatedModel.field_at_localtime(self, 'updated_at')
 
 
 class PermissionModel(models.Model):
