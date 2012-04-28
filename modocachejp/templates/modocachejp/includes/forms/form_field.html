@@ -1,0 +1,8 @@
+<div class='control-group {% if field.errors %}error{% endif %}'>
+  {{ field.label_tag }}
+  {{ field }}
+  <span class='help-inline'>{{ field.errors|join:", " }}</span>
+  {% if field.help_text %}
+    <span class='help-block'>{{ field.help_text }}</span>
+  {% endif %}
+</div>

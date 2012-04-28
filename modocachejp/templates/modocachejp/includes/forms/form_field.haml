@@ -1,0 +1,6 @@
+.control-group{class:'{% if field.errors %}error{% endif %}'}
+  = field.label_tag
+  = field
+  %span.help-inline= field.errors|join:", "
+  - if field.help_text
+    %span.help-block= field.help_text

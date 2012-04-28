@@ -1,9 +1,10 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView, DetailView, \
-                                 DayArchiveView, MonthArchiveView, \
+from django.views.generic import DetailView, CreateView, UpdateView, \
+                                 ListView, DayArchiveView, MonthArchiveView, \
                                  YearArchiveView
 
+from blogs.forms import PostForm
 from blogs.models import Tag, Post
 
 
@@ -48,6 +49,29 @@ class PostDetailView(DetailView):
             created_at__day=self.kwargs.get('day'),
             slug=self.kwargs.get('slug')
         )
+
+
+class PostCreateView(CreateView):
+    model = Post
+    form_class = PostForm
+
+    def form_valid(self, form):
+        print dir(self)
+        self.object = form.save(commit=False)
+        self.object.blog = self.request.user.blog
+        return super(PostCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+
+class PostUpdateView(UpdateView):
+    context_object_name = 'post'
+    model = Post
+    form_class = PostForm
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
 
 
 class PostListMixin(object):

@@ -1,8 +1,10 @@
 from django.conf.urls import patterns, url
+from django.contrib.auth.decorators import login_required
 
 from blogs.views import TagDetailView, PostListView, PostDetailView, \
-                        PostDayArchiveView, PostMonthArchiveView, \
-                        PostYearArchiveView
+                        PostUpdateView, PostDayArchiveView, \
+                        PostMonthArchiveView, PostYearArchiveView, \
+                        PostCreateView
 
 
 urlpatterns = patterns('',
@@ -21,6 +23,17 @@ urlpatterns = patterns('',
                '(?P<day>\d{1,2})/(?P<slug>[-\w]+)/$',
         view=PostDetailView.as_view(),
         name='posts_detail',
+    ),
+    url(
+        regex=r'^(?P<year>\d{4})/(?P<month>\d{1,2})/'
+               '(?P<day>\d{1,2})/(?P<slug>[-\w]+)/update/$',
+        view=PostUpdateView.as_view(),
+        name='posts_update',
+    ),
+    url(
+        regex=r'^create/$',
+        view=login_required(PostCreateView.as_view()),
+        name='posts_create',
     ),
     url(
         regex=r'^(?P<year>\d{4})/$',

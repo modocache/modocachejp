@@ -67,7 +67,6 @@ class PermissionModel(models.Model):
     Abstract base class which allows models to give users
     permissions when saved.
     """
-
     class Meta(object):
         abstract = True
 
@@ -208,6 +207,15 @@ class Post(DatedModel, PermissionModel):
     @models.permalink
     def get_absolute_url(self):
         return ('posts_detail', (), {
+            'year': self.created_at.year,
+            'month': self.created_at.month,
+            'day': self.created_at.day,
+            'slug': self.slug,
+        })
+
+    @models.permalink
+    def get_absolute_edit_url(self):
+        return ('posts_update', (), {
             'year': self.created_at.year,
             'month': self.created_at.month,
             'day': self.created_at.day,
