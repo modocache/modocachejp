@@ -204,9 +204,8 @@ class Post(DatedModel, PermissionModel):
     def get_user(self):
         return self.blog.user
 
-    @models.permalink
-    def get_absolute_url(self):
-        return ('posts_detail', (), {
+    def _absolute_url_for(self, url_name):
+        return (url_name, (), {
             'year': self.created_at.year,
             'month': self.created_at.month,
             'day': self.created_at.day,
@@ -214,13 +213,16 @@ class Post(DatedModel, PermissionModel):
         })
 
     @models.permalink
+    def get_absolute_url(self):
+        return self._absolute_url_for('posts_detail')
+
+    @models.permalink
     def get_absolute_edit_url(self):
-        return ('posts_update', (), {
-            'year': self.created_at.year,
-            'month': self.created_at.month,
-            'day': self.created_at.day,
-            'slug': self.slug,
-        })
+        return self._absolute_url_for('posts_update')
+
+    @models.permalink
+    def get_absolute_delete_url(self):
+        return self._absolute_url_for('posts_delete')
 
 
 from blogs.signals import *

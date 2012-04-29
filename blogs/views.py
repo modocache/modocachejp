@@ -1,8 +1,9 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, CreateView, UpdateView, \
-                                 ListView, DayArchiveView, MonthArchiveView, \
-                                 YearArchiveView
+                                 DeleteView, ListView, DayArchiveView, \
+                                 MonthArchiveView, YearArchiveView
 
 from blogs.forms import PostForm
 from blogs.models import Tag, Post
@@ -72,6 +73,13 @@ class PostUpdateView(UpdateView):
 
     def get_success_url(self):
         return self.object.get_absolute_url()
+
+
+class PostDeleteView(DeleteView):
+    model = Post
+
+    def get_success_url(self):
+        return reverse('posts_list')
 
 
 class PostListMixin(object):
